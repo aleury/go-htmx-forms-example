@@ -1,0 +1,73 @@
+{{define "fragment"}}
+<div id="fragment">
+{{if .contactForm.Success}}
+<div>
+    <div>
+        <div>
+            <p>Thanks for reaching out to me!</p>
+        </div>
+    </div>
+</div>
+{{else}}
+<div>
+    <form method="POST">
+        <h2>Send me a message!</h2>
+
+        <label for="email"><strong>Email address</strong></label><br>
+        <input type="email" 
+            name="email" 
+            maxlength="320" 
+            placeholder="Email address" 
+            value="{{.contactForm.Email}}"><br>
+        {{template "error" (index .contactForm.Errors "email")}}
+
+        <label for="fav_number"><strong>Favorite number between 1 and 10</strong></label><br>
+        <input type="number"  
+            name="fav_number" 
+            placeholder="Favorite number between 1 and 10" 
+            value="{{.contactForm.FavoriteNumber}}"><br>
+        {{template "error" (index .contactForm.Errors "fav_number")}}
+
+        <div>
+            <input type="checkbox" name="hear_back"{{if .contactForm.HearBack}} checked{{end}}>
+            <label for="hear_back"><strong>Would you like to hear back from us?</strong></label><br>
+        </div>
+        {{template "error" (index .contactForm.Errors "hear_back")}}
+
+        <label for="message"><strong>Message</strong></label><br>
+        <textarea name="message" placeholder="Message">{{.contactForm.Message}}</textarea><br>
+        {{template "error" (index .contactForm.Errors "message")}}
+
+        <button type="submit" name="submit" value="signup">Send message</button>
+    </form>
+</div>
+{{end}}
+<pre>{{spew .contactForm}}</pre>
+</div>
+{{end}}
+
+{{define "error"}}
+{{if and . (gt (len .) 0)}}
+<div>
+    <ul>
+        {{range .}}
+        <li style="color:red;">{{.}}</li>
+        {{end}}
+    </ul>
+</div>
+{{end}}
+{{end}}
+
+{{define "full"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Go Forms</title>
+</head>
+<body>
+{{template "fragment" .}}
+</body>
+</html>
+{{end}}
